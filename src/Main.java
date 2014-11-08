@@ -169,11 +169,10 @@ public class Main {
         ImageIO.write(image_white_edge, "bmp", outputfile);
 
         int pocz_i = -1, pocz_j = -1, i1 = 0, i2 = 0, i3 = 0, i4 = 0, j1 = 0, j2 = 0, j3 = 0, j4 = 0;
-        boolean flaga_obwod = true;
 
         for (int l = 0; l<height; l++)
             for (int k = 0; k<width; k++) {
-                if (tab_edge_white[k][l].getBlue()==255 && flaga_obwod) {
+                if (tab_edge_white[k][l].getBlue()==255){
                     if (pocz_i==-1) pocz_i = k;
                     if (pocz_j==-1) pocz_j = l;
                     int i = k;
@@ -234,7 +233,7 @@ public class Main {
                             i4 = i;
                             j4 = j;
                         }
-                    System.out.println("pocz i " + pocz_i);
+                    /*System.out.println("pocz i " + pocz_i);
                     System.out.println("pocz j " + pocz_j);
                     System.out.println("i1 " + i1);
                     System.out.println("j1 " + j1);
@@ -243,36 +242,53 @@ public class Main {
                     System.out.println("i3 " + i3);
                     System.out.println("j3 " + j3);
                     System.out.println("i4 " + i4);
-                    System.out.println("j4 " + j4);
-                    flaga_obwod = false;
+                    System.out.println("j4 " + j4);*/
 
-                    if (pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4) {
-                        if (i1 != 0 && i2 != 0 && i3 != 0 && i4 != 0 && j1 != 0 && j2 != 0 && j3 != 0 && j4 != 0) { //czworokat
+                    if (pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4
+                            && Math.abs(i1-pocz_i) > 0.9 *  Math.abs(i2-i3)
+                            && Math.abs(i1-pocz_i) < 1.1 *  Math.abs(i2-i3)
+                            && Math.abs(pocz_j-j3) > 0.9 * Math.abs(j1-j2)
+                            && Math.abs(pocz_j-j3) < 1.1 * Math.abs(j1-j2)
+                            && i1 != 0 && i2 != 0 && i3 != 0 && i4 != 0
+                            && j1 != 0 && j2 != 0 && j3 != 0 && j4 != 0) { //czworokat
                             if (Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) > 0.95 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2)) && Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) < 1.05 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2)))
-                                System.out.println("Znalazlem kwadrat, jego wierzcholki to: ");
-                            else System.out.println("Znalazlem prostokat, jego wierzcholki to: ");
+                                System.out.println("\nZnalazlem kwadrat, jego wierzcholki to: ");
+                            else System.out.println("\nZnalazlem prostokat, jego wierzcholki to: ");
                             System.out.println("[" + pocz_i + "; " + pocz_j + "]");
                             System.out.println("[" + i1 + "; " + j1 + "]");
                             System.out.println("[" + i2 + "; " + j2 + "]");
                             System.out.println("[" + i3 + "; " + j3 + "]");
-                        } else {
-                            System.out.println("Znalazlem trojkat, jego wierzcholki to: ");
-                            System.out.println("[" + pocz_i + "; " + pocz_j + "]");
-                            if (i1 != 0 && j1 != 0) System.out.println("[" + i1 + "; " + j1 + "]");
-                            if (i2 != 0 && j2 != 0) System.out.println("[" + i2 + "; " + j2 + "]");
-                            if (i3 != 0 && j3 != 0) System.out.println("[" + i3 + "; " + j3 + "]");
+                            //niszczenie znalezionego ksztaltu
+                            for (int a = 1; a < width-2; a++)
+                                for (int b = 1; b < height-2; b++)
+                                    if (a>i3 && a<i1 && b > pocz_j && b<j2) {
+                                        tab_edge_white[a][b] = new Color(0, 255, 0);
+                                        tab_edge_white[a+1][b] = new Color(0, 255, 0);
+                                        tab_edge_white[a][b+1] = new Color(0, 255, 0);
+                                        tab_edge_white[a+1][b+1] = new Color(0, 255, 0);
+                                    }
+                            i1 = i2 = i3 = i4 = j1 = j2 = j3 = j4 = 0;
                         }
+
+                    if ((i1 == 0 || i2 ==0 || i3 == 0 || i4 == 0) &&
+                            (pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4)) {
+                        System.out.println("\nZnalazlem trojkat, jego wierzcholki to: ");
+                        System.out.println("[" + pocz_i + "; " + pocz_j + "]");
+                        if (i1 != 0 && j1 != 0) System.out.println("[" + i1 + "; " + j1 + "]");
+                        if (i2 != 0 && j2 != 0) System.out.println("[" + i2 + "; " + j2 + "]");
+                        if (i3 != 0 && j3 != 0) System.out.println("[" + i3 + "; " + j3 + "]");
 
                         //niszczenie znalezionego ksztaltu
                         for (int a = 1; a<width-2; a++)
                             for (int b = 1; b<height-2; b++)
                                 if (a>i3 && a<i1 && b > pocz_j && b<j2)
                                     tab_edge_white[a][b] = new Color(0, 255, 0);
+                        i1 = i2 = i3 = i4 = j1 = j2 = j3 = j4 = 0;
                     }
-
                 }
-            }
-
+                pocz_i = -1;    //wierzcholek poczatkowy ponownie ustawiam na [-1, -1]
+                pocz_j = -1;    //zebym mogl szukac kolejnej figury
+           }
         //przejscie po obwodzie - test
         BufferedImage image_circuit = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
