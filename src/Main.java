@@ -49,19 +49,11 @@ public class Main {
         File outputfile = new File("image_grey.bmp");
         ImageIO.write(image_grey, "bmp", outputfile);
 
-        for (int i = 0; i < width; i++) {
-            tab_edge_X[i][0] = new Color (0, 0, 0);
-            tab_edge_Y[i][0] = new Color (0, 0, 0);
-            tab_edge_X[i][width-1] = new Color (0, 0, 0);
-            tab_edge_Y[i][width-1] = new Color (0, 0, 0);
-        }
+        for (int i = 0; i < width; i++)
+            tab_edge_X[i][0] = tab_edge_Y[i][0] = tab_edge_X[i][width-1] = tab_edge_Y[i][width-1] = new Color (0, 0, 0);
 
-        for (int i = 0; i < height; i++) {
-            tab_edge_X[0][i] = new Color (0, 0, 0);
-            tab_edge_Y[0][i] = new Color (0, 0, 0);
-            tab_edge_X[height-1][i] = new Color (0, 0, 0);
-            tab_edge_Y[height-1][i] = new Color (0, 0, 0);
-        }
+        for (int i = 0; i < height; i++)
+            tab_edge_X[0][i] = tab_edge_Y[0][i] = tab_edge_X[height-1][i] = tab_edge_Y[height-1][i] = new Color (0, 0, 0);
 
         //utworzenie zdjecia po zastosowaniu operatora Sobela X
         BufferedImage image_edge_X = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -107,26 +99,26 @@ public class Main {
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = tab_grey_scale[i-1][j-1].getRed()
-                        +2*tab_grey_scale[i][j-1].getRed()
-                        +tab_grey_scale[i+1][j-1].getRed()
-                        -tab_grey_scale[i-1][j+1].getRed()
-                        -2*tab_grey_scale[i][j+1].getRed()
-                        -tab_grey_scale[i+1][j+1].getRed();
+                red = tab_edge_X[i-1][j-1].getRed()
+                        +2*tab_edge_X[i][j-1].getRed()
+                        +tab_edge_X[i+1][j-1].getRed()
+                        -tab_edge_X[i-1][j+1].getRed()
+                        -2*tab_edge_X[i][j+1].getRed()
+                        -tab_edge_X[i+1][j+1].getRed();
 
-                green = tab_grey_scale[i-1][j-1].getGreen()
-                        +2*tab_grey_scale[i][j-1].getGreen()
-                        +tab_grey_scale[i+1][j-1].getGreen()
-                        -tab_grey_scale[i-1][j+1].getGreen()
-                        -2*tab_grey_scale[i][j+1].getGreen()
-                        -tab_grey_scale[i+1][j+1].getGreen();
+                green = tab_edge_X[i-1][j-1].getGreen()
+                        +2*tab_edge_X[i][j-1].getGreen()
+                        +tab_edge_X[i+1][j-1].getGreen()
+                        -tab_edge_X[i-1][j+1].getGreen()
+                        -2*tab_edge_X[i][j+1].getGreen()
+                        -tab_edge_X[i+1][j+1].getGreen();
 
-                blue = tab_grey_scale[i-1][j-1].getBlue()
-                        +2*tab_grey_scale[i][j-1].getBlue()
-                        +tab_grey_scale[i+1][j-1].getBlue()
-                        -tab_grey_scale[i-1][j+1].getBlue()
-                        -2*tab_grey_scale[i][j+1].getBlue()
-                        -tab_grey_scale[i+1][j+1].getBlue();
+                blue = tab_edge_X[i-1][j-1].getBlue()
+                        +2*tab_edge_X[i][j-1].getBlue()
+                        +tab_edge_X[i+1][j-1].getBlue()
+                        -tab_edge_X[i-1][j+1].getBlue()
+                        -2*tab_edge_X[i][j+1].getBlue()
+                        -tab_edge_X[i+1][j+1].getBlue();
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -145,7 +137,7 @@ public class Main {
         BufferedImage image_white_edge = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_white[i][j] = (tab_edge_Y[i][j].getRed()<50 && tab_edge_Y[i][j].getGreen()<50 && tab_edge_Y[i][j].getBlue()<50) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                tab_edge_white[i][j] = (tab_edge_Y[i][j].getRed()<100 && tab_edge_Y[i][j].getGreen()<100 && tab_edge_Y[i][j].getBlue()<100) ? new Color(0, 0, 0) : new Color (255, 255, 255);
                 image_white_edge.setRGB(i, j, tab_edge_white[i][j].getRGB());
             }
         outputfile = new File("image_white_edge.bmp");
