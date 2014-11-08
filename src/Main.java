@@ -142,6 +142,5 @@ public class Main {
             }
         outputfile = new File("image_edge_Y.bmp");
         ImageIO.write(image_edge_Y, "bmp", outputfile);
-
     }
 }
