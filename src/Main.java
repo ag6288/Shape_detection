@@ -10,7 +10,6 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         int red, green, blue;
-        double r;
         File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_images.bmp");
         //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_image.bmp");
         //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\Tomek.bmp");
@@ -248,6 +247,7 @@ public class Main {
                             i4 = i;
                             j4 = j;
                         }
+
                     /*System.out.println("pocz i " + pocz_i);
                     System.out.println("pocz j " + pocz_j);
                     System.out.println("i1 " + i1);
@@ -307,6 +307,7 @@ public class Main {
                                     System.out.println("[" + i3 + "; " + j3 + "]");
                                 }
                         }
+
                             //niszczenie znalezionego ksztaltu
                             for (int a = 1; a < width-2; a++)
                                 for (int b = 1; b < height-2; b++)
