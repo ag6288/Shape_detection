@@ -248,11 +248,12 @@ public class Main {
 
                     //sprawdzam czy woerzcholki sie nie powtarzaja
                     //nie chce wykrywac malutkich krawedzi/ksztaltow
-                    if (pocz_i<i1+10 && pocz_i>i1-10 && pocz_j<j1+10 && pocz_j>j1-10) pocz_i=0;
-                    if (pocz_i<i2+10 && pocz_i>i2-10 && pocz_j<j2+10 && pocz_j>j2-10) pocz_i=0;
-                    if (i1<i2+10 && i1>i2-10 && j1<j2+10 && j1>j2-10) i1=0;
-                    if (i1<i3+10 && i1>i3-10 && j1<j3+10 && j1>j3-10) i1=0;
-                    if (i2<i3+10 && i2>i3-10 && j2<j3+10 && j2>j3-10) i2=0;
+                    if (pocz_i<i1+50 && pocz_i>i1-50 && pocz_j<j1+50 && pocz_j>j1-50) pocz_i=0;
+                    if (pocz_i<i2+50 && pocz_i>i2-50 && pocz_j<j2+50 && pocz_j>j2-50) pocz_i=0;
+                    if (pocz_i<i3+50 && pocz_i>i3-50 && pocz_j<j3+50 && pocz_j>j3-50) pocz_i=0;
+                    if (i1<i2+50 && i1>i2-50 && j1<j2+50 && j1>j2-50) i1=0;
+                    if (i1<i3+50 && i1>i3-50 && j1<j3+50 && j1>j3-50) i1=0;
+                    if (i2<i3+50 && i2>i3-50 && j2<j3+50 && j2>j3-50) i2=0;
 
                     if (pocz_i!=0 && i1!=0 && i2!=0 && i3!=0
                             && pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4
@@ -281,9 +282,9 @@ public class Main {
                             i1 = i2 = i3 = i4 = j1 = j2 = j3 = j4 = 0;
                         }
 
-                    if (((pocz_i != 0 && i1 != 0 && i2 != 0)
-                        || (pocz_i != 0 && i1 != 0 && i3 != 0)
-                        || (pocz_i != 0 && i2 != 0 && i3 != 0))
+                    if (((pocz_i != 0 && i1 != 0 && i2 != 0 && i3 ==0)
+                        || (pocz_i != 0 && i1 != 0 && i3 != 0 && i2 ==0)
+                        || (pocz_i != 0 && i2 != 0 && i3 != 0 && i1 ==0))
                         && (pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4)) {
                         System.out.println("\nZnalazlem trojkat, jego wierzcholki to: ");
                         System.out.println("[" + pocz_i + "; " + pocz_j + "]");
