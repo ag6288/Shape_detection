@@ -13,6 +13,7 @@ public class Main {
         File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_images.bmp");
         //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_image.bmp");
         //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\Tomek.bmp");
+
         BufferedImage picture = null;
         try {
             picture = ImageIO.read(plik);
@@ -144,7 +145,8 @@ public class Main {
         BufferedImage image_white_edge_X = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_white_X[i][j] = (tab_edge_X[i][j].getRed()<1 && tab_edge_X[i][j].getGreen()<1 && tab_edge_X[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                tab_edge_white_X[i][j] = (tab_edge_X[i][j].getRed()<1 && tab_edge_X[i][j].getGreen()<1
+                        && tab_edge_X[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
                 image_white_edge_X.setRGB(i, j, tab_edge_white_X[i][j].getRGB());
             }
         outputfile = new File("4_image_white_edge_X.bmp");
@@ -154,7 +156,8 @@ public class Main {
         BufferedImage image_white_edge_Y = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_white_Y[i][j] = (tab_edge_Y[i][j].getRed()<1 && tab_edge_Y[i][j].getGreen()<1 && tab_edge_Y[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                tab_edge_white_Y[i][j] = (tab_edge_Y[i][j].getRed()<1 && tab_edge_Y[i][j].getGreen()<1
+                        && tab_edge_Y[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
                 image_white_edge_Y.setRGB(i, j, tab_edge_white_Y[i][j].getRGB());
             }
         outputfile = new File("5_image_white_edge_Y.bmp");
@@ -164,7 +167,8 @@ public class Main {
         BufferedImage image_white_edge = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_green[i][j] = tab_edge_white[i][j] = (tab_edge_white_X[i][j].getBlue() == 255 || tab_edge_white_Y[i][j].getBlue() == 255) ? new Color(255, 255, 255) : new Color (0, 0, 0);
+                tab_edge_green[i][j] = tab_edge_white[i][j] = (tab_edge_white_X[i][j].getBlue() == 255
+                        || tab_edge_white_Y[i][j].getBlue() == 255) ? new Color(255, 255, 255) : new Color (0, 0, 0);
                 image_white_edge.setRGB(i, j, tab_edge_white[i][j].getRGB());
             }
         outputfile = new File("6_image_white_edge.bmp");
@@ -277,13 +281,20 @@ public class Main {
                             && i1 != 0 && i2 != 0 && i3 != 0 && i4 != 0
                             && j1 != 0 && j2 != 0 && j3 != 0 && j4 != 0){ //czworokat
 
-                            if (Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) > 0.95 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2)) && Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) < 1.05 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2))) {
+                            if (Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) >
+                                    0.95 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2))
+                                    && Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) <
+                                    1.05 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2))) {
+
                                     if (k1 > 1.03 * Math.sqrt((pocz_i - i1) * (pocz_i - i1) + (pocz_j - j1) * (pocz_j - j1))) {
                                         System.out.println("\nZnalazlem kolo ");
                                         srodek_i = (int)((pocz_i+i1+i2+i3)/4);
                                         srodek_j = (int)((pocz_j+j1+j2+j3)/4);
                                         System.out.println("Srodek: [" + srodek_i + "; " + srodek_j + "]");
-                                        System.out.println("Promien: " + (int)(0.25*(Math.sqrt((srodek_i - pocz_i) * (srodek_i - pocz_i) + (srodek_j - pocz_j) * (srodek_j - pocz_j))+Math.sqrt((srodek_i - i1) * (srodek_i - i1) + (srodek_j - j1) * (srodek_j - j1))+Math.sqrt((srodek_i - i2) * (srodek_i - i2) + (srodek_j - j2) * (srodek_j - j2))+Math.sqrt((srodek_i - i3) * (srodek_i - i3) + (srodek_j - j3) * (srodek_j - j3)))));
+                                        System.out.println("Promien: " + (int)(0.25*(Math.sqrt((srodek_i - pocz_i) * (srodek_i - pocz_i) + (srodek_j - pocz_j) * (srodek_j - pocz_j))
+                                                + Math.sqrt((srodek_i - i1) * (srodek_i - i1) + (srodek_j - j1) * (srodek_j - j1))
+                                                + Math.sqrt((srodek_i - i2) * (srodek_i - i2) + (srodek_j - j2) * (srodek_j - j2))
+                                                + Math.sqrt((srodek_i - i3) * (srodek_i - i3) + (srodek_j - j3) * (srodek_j - j3)))));
                                     } else {
                                         System.out.println("\nZnalazlem kwadrat, jego wierzcholki to: ");
                                         System.out.println("[" + pocz_i + "; " + pocz_j + "]");
@@ -292,14 +303,17 @@ public class Main {
                                         System.out.println("[" + i3 + "; " + j3 + "]");
                                     }
                                 } else {
+
                                     if (k1 > 1.01 * Math.sqrt((pocz_i - i1) * (pocz_i - i1) + (pocz_j - j1) * (pocz_j - j1))) {
                                         System.out.println("\nZnalazlem elipse ");
                                         srodek_i = (int)((pocz_i+i1+i2+i3)/4);
                                         srodek_j = (int)((pocz_j+j1+j2+j3)/4);
                                         System.out.println("Srodek: [" + srodek_i + "; " + srodek_j + "]");
-                                        System.out.println("Promien pierwszy: " + (int)(0.5*(Math.sqrt((srodek_i - pocz_i) * (srodek_i - pocz_i) + (srodek_j - pocz_j) * (srodek_j - pocz_j))+Math.sqrt((srodek_i - i2) * (srodek_i - i2) + (srodek_j - j2) * (srodek_j - j2)))));
-                                        System.out.println("Promien drugi: " + (int)(0.5*(Math.sqrt((srodek_i - i1) * (srodek_i - i1) + (srodek_j - j1) * (srodek_j - j1))+Math.sqrt((srodek_i - i3) * (srodek_i - i3) + (srodek_j - j3) * (srodek_j - j3)))));
-                                    }else {
+                                        System.out.println("Promien pierwszy: " + (int)(0.5*(Math.sqrt((srodek_i - pocz_i) * (srodek_i - pocz_i) + (srodek_j - pocz_j) * (srodek_j - pocz_j))
+                                                + Math.sqrt((srodek_i - i2) * (srodek_i - i2) + (srodek_j - j2) * (srodek_j - j2)))));
+                                        System.out.println("Promien drugi: " + (int)(0.5*(Math.sqrt((srodek_i - i1) * (srodek_i - i1) + (srodek_j - j1) * (srodek_j - j1))
+                                                + Math.sqrt((srodek_i - i3) * (srodek_i - i3) + (srodek_j - j3) * (srodek_j - j3)))));
+                                    } else {
                                         System.out.println("\nZnalazlem prostokat, jego wierzcholki to: ");
                                         System.out.println("[" + pocz_i + "; " + pocz_j + "]");
                                         System.out.println("[" + i1 + "; " + j1 + "]");
