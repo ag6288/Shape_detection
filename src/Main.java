@@ -168,8 +168,8 @@ public class Main {
         outputfile = new File("6_image_white_edge.bmp");
         ImageIO.write(image_white_edge, "bmp", outputfile);
 
+        //szukanie wierzcholkow startowych
         int pocz_i = -1, pocz_j = -1, i1 = 0, i2 = 0, i3 = 0, i4 = 0, j1 = 0, j2 = 0, j3 = 0, j4 = 0;
-
         for (int l = 0; l<height; l++)
             for (int k = 0; k<width; k++) {
                 if (tab_edge_white[k][l].getBlue()==255){
@@ -246,7 +246,7 @@ public class Main {
                     System.out.println("i4 " + i4);
                     System.out.println("j4 " + j4);*/
 
-                    //sprawdzam czy woerzcholki sie nie powtarzaja
+                    //sprawdzam czy wierzcholki sie nie powtarzaja
                     //nie chce wykrywac malutkich krawedzi/ksztaltow
                     if (pocz_i<i1+50 && pocz_i>i1-50 && pocz_j<j1+50 && pocz_j>j1-50) pocz_i=0;
                     if (pocz_i<i2+50 && pocz_i>i2-50 && pocz_j<j2+50 && pocz_j>j2-50) pocz_i=0;
