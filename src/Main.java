@@ -3,8 +3,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Janusz on 2014-11-02.
@@ -14,6 +12,7 @@ public class Main {
         int red, green, blue;
         double r;
         File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_image.bmp");
+        //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\Tomek.bmp");
         BufferedImage picture = null;
         try {
             picture = ImageIO.read(plik);
@@ -30,6 +29,7 @@ public class Main {
         Color[][] tab_edge_white = new Color[width][height];
         Color[][] tab_edge_white_X = new Color[width][height];
         Color[][] tab_edge_white_Y = new Color[width][height];
+        Color[][] tab_edge_green = new Color[width][height];
         int[][] tab_Red = new int[width][height];
         int[][] tab_Green = new int[width][height];
         int[][] tab_Blue = new int[width][height];
@@ -142,7 +142,7 @@ public class Main {
         BufferedImage image_white_edge_X = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_white_X[i][j] = (tab_edge_X[i][j].getRed()<100 && tab_edge_X[i][j].getGreen()<100 && tab_edge_X[i][j].getBlue()<100) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                tab_edge_white_X[i][j] = (tab_edge_X[i][j].getRed()<1 && tab_edge_X[i][j].getGreen()<1 && tab_edge_X[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
                 image_white_edge_X.setRGB(i, j, tab_edge_white_X[i][j].getRGB());
             }
         outputfile = new File("4_image_white_edge_X.bmp");
@@ -152,7 +152,7 @@ public class Main {
         BufferedImage image_white_edge_Y = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_white_Y[i][j] = (tab_edge_Y[i][j].getRed()<100 && tab_edge_Y[i][j].getGreen()<100 && tab_edge_Y[i][j].getBlue()<100) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                tab_edge_white_Y[i][j] = (tab_edge_Y[i][j].getRed()<1 && tab_edge_Y[i][j].getGreen()<1 && tab_edge_Y[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
                 image_white_edge_Y.setRGB(i, j, tab_edge_white_Y[i][j].getRGB());
             }
         outputfile = new File("5_image_white_edge_Y.bmp");
@@ -162,7 +162,7 @@ public class Main {
         BufferedImage image_white_edge = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_white[i][j] = (tab_edge_white_X[i][j].getBlue() == 255 || tab_edge_white_Y[i][j].getBlue() == 255) ? new Color(255, 255, 255) : new Color (0, 0, 0);
+                tab_edge_green[i][j] = tab_edge_white[i][j] = (tab_edge_white_X[i][j].getBlue() == 255 || tab_edge_white_Y[i][j].getBlue() == 255) ? new Color(255, 255, 255) : new Color (0, 0, 0);
                 image_white_edge.setRGB(i, j, tab_edge_white[i][j].getRGB());
             }
         outputfile = new File("6_image_white_edge.bmp");
@@ -177,6 +177,8 @@ public class Main {
                     if (pocz_j==-1) pocz_j = l;
                     int i = k;
                     int j = l;
+
+                        //prawo, dol
                         while (tab_edge_white[i + 1][j].getBlue() == 255
                                 || tab_edge_white[i + 1][j + 1].getBlue() == 255
                                 || tab_edge_white[i][j + 1].getBlue() == 255) {
@@ -187,7 +189,7 @@ public class Main {
                                     j++;
                                 } else i++;
                             }
-                            tab_edge_white[i][j] = new Color(0, 255, 0);
+                            tab_edge_green[i][j] = tab_edge_white[i][j] = new Color(0, 255, 0);
                             i1 = i;
                             j1 = j;
                         }
@@ -201,7 +203,7 @@ public class Main {
                                 i--;
                                 j++;
                             } else i--;
-                            tab_edge_white[i][j] = new Color(0, 255, 0);
+                            tab_edge_green[i][j] = tab_edge_white[i][j] = new Color(0, 255, 0);
                             i2 = i;
                             j2 = j;
                         }
@@ -215,7 +217,7 @@ public class Main {
                                 i--;
                                 j--;
                             } else j--;
-                            tab_edge_white[i][j] = new Color(0, 255, 0);
+                            tab_edge_green[i][j] = tab_edge_white[i][j] = new Color(0, 255, 0);
                             i3 = i;
                             j3 = j;
                         }
@@ -229,7 +231,7 @@ public class Main {
                                 i++;
                                 j--;
                             } else i++;
-                            tab_edge_white[i][j] = new Color(0, 255, 0);
+                            tab_edge_green[i][j] = tab_edge_white[i][j] = new Color(0, 255, 0);
                             i4 = i;
                             j4 = j;
                         }
@@ -244,7 +246,16 @@ public class Main {
                     System.out.println("i4 " + i4);
                     System.out.println("j4 " + j4);*/
 
-                    if (pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4
+                    //sprawdzam czy woerzcholki sie nie powtarzaja
+                    //nie chce wykrywac malutkich krawedzi/ksztaltow
+                    if (pocz_i<i1+10 && pocz_i>i1-10 && pocz_j<j1+10 && pocz_j>j1-10) pocz_i=0;
+                    if (pocz_i<i2+10 && pocz_i>i2-10 && pocz_j<j2+10 && pocz_j>j2-10) pocz_i=0;
+                    if (i1<i2+10 && i1>i2-10 && j1<j2+10 && j1>j2-10) i1=0;
+                    if (i1<i3+10 && i1>i3-10 && j1<j3+10 && j1>j3-10) i1=0;
+                    if (i2<i3+10 && i2>i3-10 && j2<j3+10 && j2>j3-10) i2=0;
+
+                    if (pocz_i!=0 && i1!=0 && i2!=0 && i3!=0
+                            && pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4
                             && Math.abs(i1-pocz_i) > 0.9 *  Math.abs(i2-i3)
                             && Math.abs(i1-pocz_i) < 1.1 *  Math.abs(i2-i3)
                             && Math.abs(pocz_j-j3) > 0.9 * Math.abs(j1-j2)
@@ -270,8 +281,10 @@ public class Main {
                             i1 = i2 = i3 = i4 = j1 = j2 = j3 = j4 = 0;
                         }
 
-                    if ((i1 == 0 || i2 ==0 || i3 == 0 || i4 == 0) &&
-                            (pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4)) {
+                    if (((pocz_i != 0 && i1 != 0 && i2 != 0)
+                        || (pocz_i != 0 && i1 != 0 && i3 != 0)
+                        || (pocz_i != 0 && i2 != 0 && i3 != 0))
+                        && (pocz_i > 0.9*i4 && pocz_i < 1.1*i4 && pocz_j > 0.9*j4 && pocz_j < 1.1*j4)) {
                         System.out.println("\nZnalazlem trojkat, jego wierzcholki to: ");
                         System.out.println("[" + pocz_i + "; " + pocz_j + "]");
                         if (i1 != 0 && j1 != 0) System.out.println("[" + i1 + "; " + j1 + "]");
@@ -289,11 +302,45 @@ public class Main {
                 pocz_i = -1;    //wierzcholek poczatkowy ponownie ustawiam na [-1, -1]
                 pocz_j = -1;    //zebym mogl szukac kolejnej figury
            }
+
         //przejscie po obwodzie - test
-        BufferedImage image_circuit = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image_circuit_green = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++) image_circuit.setRGB(i, j, tab_edge_white[i][j].getRGB());
-        outputfile = new File("7_image_circuit.bmp");
-        ImageIO.write(image_circuit, "bmp", outputfile);
+            for (int j = 0; j < height; j++) image_circuit_green.setRGB(i, j, tab_edge_green[i][j].getRGB());
+        outputfile = new File("7_image_circuit_green.bmp");
+        ImageIO.write(image_circuit_green, "bmp", outputfile);
+
+        //zamalowanie ksztaltow - test
+        BufferedImage image_destroyed_shapes = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++) image_destroyed_shapes.setRGB(i, j, tab_edge_white[i][j].getRGB());
+        outputfile = new File("8_destroyed_shapes.bmp");
+        ImageIO.write(image_destroyed_shapes, "bmp", outputfile);
     }
 }
+
+/*
+        //wypelnianie tablicy Hough
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                if (tab_edge_white[i][j].getBlue()==255)
+                    for (int k = 0; k<180; k++) {
+                        r = (i * Math.cos(k) + j * Math.sin(k));
+                        tab_Hough[k][(int)Math.abs(r)]++;
+                    }
+        Map<Double, Double> proste = new HashMap<Double, Double>();
+        //px = r * cos(angle)
+        //py = r * sin(angle).
+        //y=ax+b
+        //b = y-ax
+
+        //wyszukiwanie wierzcholkow
+        int bk=0, bj=0, c=0;
+        for (int k = 0; k<180; k++)
+            for (int j = 0; j<(int)Math.sqrt(width*width+height*height); j++){
+                if (tab_Hough[k][j]>100) {
+                    proste.put(Math.tan(k), (j * Math.sin(k) - Math.tan(k) * j * Math.cos(k)));
+                }
+        }
+        System.out.println("rozmiar" + proste.size());
+ */
