@@ -251,7 +251,7 @@ public class Main {
                             j4 = j;
                         }
 
-                    System.out.println("pocz i " + pocz_i);
+                    /*System.out.println("pocz i " + pocz_i);
                     System.out.println("pocz j " + pocz_j);
                     System.out.println("i1 " + i1);
                     System.out.println("j1 " + j1);
@@ -260,7 +260,7 @@ public class Main {
                     System.out.println("i3 " + i3);
                     System.out.println("j3 " + j3);
                     System.out.println("i4 " + i4);
-                    System.out.println("j4 " + j4);
+                    System.out.println("j4 " + j4);*/
 
                     //sprawdzam czy wierzcholki sie nie powtarzaja
                     //nie chce wykrywac malutkich krawedzi/ksztaltow
@@ -381,7 +381,7 @@ public class Main {
                         r = (i * Math.cos(k) + j * Math.sin(k));
                         tab_Hough[k][(int)Math.abs(r)]++;
                     }
-        
+
         Map<Double, Double> proste = new HashMap<Double, Double>();
         //px = r * cos(angle)
         //py = r * sin(angle).
