@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int red, green, blue;
         File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_images.bmp");
-        //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_image.bmp");
         //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\Tomek.bmp");
 
         BufferedImage picture = null;
