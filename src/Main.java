@@ -4,12 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
+ /**
  * Created by Janusz on 2014-11-02.
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        int red, green, blue;
+        long timeBegin=System.currentTimeMillis();
+        int red, green, blue, grey;
         File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_images.bmp");
         //File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\Tomek.bmp");
 
@@ -24,11 +25,17 @@ public class Main {
         int height = picture.getHeight();
         Color[][] tab_RGB = new Color[width][height];
         Color[][] tab_grey_scale = new Color[width][height];
-        Color[][] tab_edge_X = new Color[width][height];
-        Color[][] tab_edge_Y = new Color[width][height];
+        Color[][] Sobel1 = new Color[width][height];
+        Color[][] Sobel2 = new Color[width][height];
+        Color[][] Sobel3 = new Color[width][height];
+        Color[][] Sobel4 = new Color[width][height];
+        Color[][] Sobel5 = new Color[width][height];
+        Color[][] Sobel6 = new Color[width][height];
+        Color[][] Sobel7 = new Color[width][height];
+        Color[][] Sobel8 = new Color[width][height];
+
         Color[][] tab_edge_white = new Color[width][height];
-        Color[][] tab_edge_white_X = new Color[width][height];
-        Color[][] tab_edge_white_Y = new Color[width][height];
+
         Color[][] tab_edge_green = new Color[width][height];
         int[][] tab_Red = new int[width][height];
         int[][] tab_Green = new int[width][height];
@@ -44,11 +51,18 @@ public class Main {
                 tab_Blue[i][j] = tab_RGB[i][j].getBlue();
             }
 
+/*----------------------------------------------------------------------------------------------------
+POCZATEK
+----------------------------------------------------------------------------------------------------*/
+
         //utworzenie zdjecia w skali szarosci
         BufferedImage image_grey = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_grey_scale[i][j] = new Color((int) (0.3 * tab_Red[i][j]), (int) (0.59 * tab_Green[i][j]), (int) (0.11 * tab_Blue[i][j]));
+                grey = (int) (0.3 * tab_Red[i][j] + 0.59 * tab_Green[i][j] + 0.11 * tab_Blue[i][j]);
+                grey = (int) (0.33 * tab_Red[i][j] + 0.33 * tab_Green[i][j] + 0.33 * tab_Blue[i][j]);
+                tab_grey_scale[i][j] = new Color(grey, grey, grey);
+                //tab_grey_scale[i][j] = new Color((int) (0.3 * tab_Red[i][j]), (int) (0.59 * tab_Green[i][j]), (int) (0.11 * tab_Blue[i][j]));
                 //tab_grey_scale[i][j] = new Color((int) (0.33 * tab_Red[i][j]), (int) (0.33 * tab_Green[i][j]), (int) (0.33 * tab_Blue[i][j]));
                 //tab_grey_scale[i][j] = new Color((int) (0.299 * tab_Red[i][j]), (int) (0.587 * tab_Green[i][j]), (int) (0.114 * tab_Blue[i][j]));
                 image_grey.setRGB(i, j, tab_grey_scale[i][j].getRGB());
@@ -57,36 +71,151 @@ public class Main {
         ImageIO.write(image_grey, "bmp", outputfile);
 
         for (int i = 0; i < width; i++)
-            tab_edge_X[i][0] = tab_edge_Y[i][0] = tab_edge_X[i][height-1] = tab_edge_Y[i][height-1] = new Color (0, 0, 0);
+            Sobel1[i][0] = Sobel2[i][0] = Sobel3[i][0] = Sobel4[i][0] = Sobel5[i][0] = Sobel6[i][0] = Sobel7[i][0] = Sobel8[i][0]
+                    = Sobel1[i][height-1] = Sobel2[i][height-1] = Sobel3[i][height-1] = Sobel4[i][height-1]
+                    = Sobel5[i][height-1] = Sobel6[i][height-1] = Sobel7[i][height-1] = Sobel8[i][height-1]
+                    = new Color (0, 0, 0);
 
         for (int i = 0; i < height; i++)
-            tab_edge_X[0][i] = tab_edge_Y[0][i] = tab_edge_X[width-1][i] = tab_edge_Y[width-1][i] = new Color (0, 0, 0);
+            Sobel1[0][i] = Sobel2[0][i] = Sobel3[0][i] = Sobel4[0][i] = Sobel5[0][i] = Sobel6[0][i] = Sobel7[0][i] = Sobel8[0][i]
+                    = Sobel1[width-1][i] = Sobel2[width-1][i] = Sobel3[width-1][i] = Sobel4[width-1][i]
+                    = Sobel5[width-1][i] = Sobel6[width-1][i] = Sobel7[width-1][i] = Sobel8[width-1][i]
+                    = new Color (0, 0, 0);
 
-        //utworzenie zdjecia po zastosowaniu operatora Sobela X
-        BufferedImage image_edge_X = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 1
+        BufferedImage image_Sobel1 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = tab_grey_scale[i-1][j-1].getRed()
-                        -tab_grey_scale[i-1][j+1].getRed()
+                red = -1*tab_grey_scale[i-1][j-1].getRed()
+                        +0*tab_grey_scale[i-1][j].getRed()
+                        +1*tab_grey_scale[i-1][j+1].getRed()
+                        -2*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        +2*tab_grey_scale[i][j+1].getRed()
+                        -1*tab_grey_scale[i+1][j-1].getRed()
+                        +0*tab_grey_scale[i+1][j].getRed()
+                        +1*tab_grey_scale[i+1][j+1].getRed();
+
+                green = -1*tab_grey_scale[i-1][j-1].getGreen()
+                        +0*tab_grey_scale[i-1][j].getGreen()
+                        +1*tab_grey_scale[i-1][j+1].getGreen()
+                        -2*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        +2*tab_grey_scale[i][j+1].getGreen()
+                        -1*tab_grey_scale[i+1][j-1].getGreen()
+                        +0*tab_grey_scale[i+1][j].getGreen()
+                        +1*tab_grey_scale[i+1][j+1].getGreen();
+
+                blue = -1*tab_grey_scale[i-1][j-1].getBlue()
+                        +0*tab_grey_scale[i-1][j].getBlue()
+                        +1*tab_grey_scale[i-1][j+1].getBlue()
+                        -2*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        +2*tab_grey_scale[i][j+1].getBlue()
+                        -1*tab_grey_scale[i+1][j-1].getBlue()
+                        +1*tab_grey_scale[i+1][j+1].getBlue()
+                        +0*tab_grey_scale[i+1][j].getBlue();
+
+                if (red<0) red = 0;
+                if (red>255) red = 255;
+                if (green<0) green = 0;
+                if (green>255) green = 255;
+                if (blue<0) blue = 0;
+                if (blue>255) blue = 255;
+
+                Sobel1[i][j] = new Color(red, green, blue);
+                Sobel1[i][j] = (Sobel1[i][j].getRed()<1 && Sobel1[i][j].getGreen()<1
+                        && Sobel1[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel1.setRGB(i, j, Sobel1[i][j].getRGB());
+            }
+        outputfile = new File("2_image_Sobel1.bmp");
+        ImageIO.write(image_Sobel1, "bmp", outputfile);
+
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 2
+        BufferedImage image_Sobel2 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 1; i < width-1; i++)
+            for (int j = 1; j < height-1; j++) {
+
+                red = 0*tab_grey_scale[i-1][j-1].getRed()
+                        +1*tab_grey_scale[i-1][j].getRed()
+                        +2*tab_grey_scale[i-1][j+1].getRed()
+                        -1*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        +1*tab_grey_scale[i][j+1].getRed()
+                        -2*tab_grey_scale[i+1][j-1].getRed()
+                        -1*tab_grey_scale[i+1][j].getRed()
+                        +0*tab_grey_scale[i+1][j+1].getRed();
+
+                green = 0*tab_grey_scale[i-1][j-1].getGreen()
+                        +1*tab_grey_scale[i-1][j].getGreen()
+                        +2*tab_grey_scale[i-1][j+1].getGreen()
+                        -1*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        +1*tab_grey_scale[i][j+1].getGreen()
+                        -2*tab_grey_scale[i+1][j-1].getGreen()
+                        -1*tab_grey_scale[i+1][j].getGreen()
+                        +0*tab_grey_scale[i+1][j+1].getGreen();
+
+                blue = 0*tab_grey_scale[i-1][j-1].getBlue()
+                        +1*tab_grey_scale[i-1][j].getBlue()
+                        +2*tab_grey_scale[i-1][j+1].getBlue()
+                        -1*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        +1*tab_grey_scale[i][j+1].getBlue()
+                        -2*tab_grey_scale[i+1][j-1].getBlue()
+                        -1*tab_grey_scale[i+1][j].getBlue()
+                        +0*tab_grey_scale[i+1][j+1].getBlue();
+
+                if (red<0) red = 0;
+                if (red>255) red = 255;
+                if (green<0) green = 0;
+                if (green>255) green = 255;
+                if (blue<0) blue = 0;
+                if (blue>255) blue = 255;
+
+                Sobel2[i][j] = new Color(red, green, blue);
+                Sobel2[i][j] = (Sobel2[i][j].getRed()<1 && Sobel2[i][j].getGreen()<1
+                        && Sobel2[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel2.setRGB(i, j, Sobel2[i][j].getRGB());
+            }
+        outputfile = new File("3_image_Sobel2.bmp");
+        ImageIO.write(image_Sobel2, "bmp", outputfile);
+
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 3
+        BufferedImage image_Sobel3 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 1; i < width-1; i++)
+            for (int j = 1; j < height-1; j++) {
+
+                red = 1*tab_grey_scale[i-1][j-1].getRed()
                         +2*tab_grey_scale[i-1][j].getRed()
+                        +1*tab_grey_scale[i-1][j+1].getRed()
+                        +0*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        +0*tab_grey_scale[i][j+1].getRed()
+                        -1*tab_grey_scale[i+1][j-1].getRed()
                         -2*tab_grey_scale[i+1][j].getRed()
-                        +tab_grey_scale[i-1][j-1].getRed()
-                        -tab_grey_scale[i+1][j+1].getRed();
+                        -1*tab_grey_scale[i+1][j+1].getRed();
 
-                green = tab_grey_scale[i-1][j-1].getGreen()
-                        -tab_grey_scale[i-1][j+1].getGreen()
+                green = 1*tab_grey_scale[i-1][j-1].getGreen()
                         +2*tab_grey_scale[i-1][j].getGreen()
+                        +1*tab_grey_scale[i-1][j+1].getGreen()
+                        +0*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        +0*tab_grey_scale[i][j+1].getGreen()
+                        -1*tab_grey_scale[i+1][j-1].getGreen()
                         -2*tab_grey_scale[i+1][j].getGreen()
-                        +tab_grey_scale[i-1][j-1].getGreen()
-                        -tab_grey_scale[i+1][j+1].getGreen();
+                        -1*tab_grey_scale[i+1][j+1].getGreen();
 
-                blue = tab_grey_scale[i-1][j-1].getBlue()
-                        -tab_grey_scale[i-1][j+1].getBlue()
+                blue = 1*tab_grey_scale[i-1][j-1].getBlue()
                         +2*tab_grey_scale[i-1][j].getBlue()
+                        +1*tab_grey_scale[i-1][j+1].getBlue()
+                        +0*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        +0*tab_grey_scale[i][j+1].getBlue()
+                        -1*tab_grey_scale[i+1][j-1].getBlue()
                         -2*tab_grey_scale[i+1][j].getBlue()
-                        +tab_grey_scale[i-1][j-1].getBlue()
-                        -tab_grey_scale[i+1][j+1].getBlue();
+                        -1*tab_grey_scale[i+1][j+1].getBlue();
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -95,37 +224,48 @@ public class Main {
                 if (blue<0) blue = 0;
                 if (blue>255) blue = 255;
 
-                tab_edge_X[i][j] = new Color(red, green, blue);
-                image_edge_X.setRGB(i, j, tab_edge_X[i][j].getRGB());
+                Sobel3[i][j] = new Color(red, green, blue);
+                Sobel3[i][j] = (Sobel3[i][j].getRed()<1 && Sobel3[i][j].getGreen()<1
+                        && Sobel3[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel3.setRGB(i, j, Sobel3[i][j].getRGB());
             }
-        outputfile = new File("2_image_edge_X.bmp");
-        ImageIO.write(image_edge_X, "bmp", outputfile);
+        outputfile = new File("4_image_Sobel3.bmp");
+        ImageIO.write(image_Sobel3, "bmp", outputfile);
 
-        //utworzenie zdjecia po zastosowaniu operatora Sobela Y
-        BufferedImage image_edge_Y = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 4
+        BufferedImage image_Sobel4 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = tab_grey_scale[i-1][j-1].getRed()
-                        +2*tab_grey_scale[i][j-1].getRed()
-                        +tab_grey_scale[i+1][j-1].getRed()
-                        -tab_grey_scale[i-1][j+1].getRed()
-                        -2*tab_grey_scale[i][j+1].getRed()
-                        -tab_grey_scale[i+1][j+1].getRed();
+                red = 2*tab_grey_scale[i-1][j-1].getRed()
+                        +1*tab_grey_scale[i-1][j].getRed()
+                        +0*tab_grey_scale[i-1][j+1].getRed()
+                        +1*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        -1*tab_grey_scale[i][j+1].getRed()
+                        +0*tab_grey_scale[i+1][j-1].getRed()
+                        -1*tab_grey_scale[i+1][j].getRed()
+                        -2*tab_grey_scale[i+1][j+1].getRed();
 
-                green = tab_grey_scale[i-1][j-1].getGreen()
-                        +2*tab_grey_scale[i][j-1].getGreen()
-                        +tab_grey_scale[i+1][j-1].getGreen()
-                        -tab_grey_scale[i-1][j+1].getGreen()
-                        -2*tab_grey_scale[i][j+1].getGreen()
-                        -tab_grey_scale[i+1][j+1].getGreen();
+                green = 2*tab_grey_scale[i-1][j-1].getGreen()
+                        +1*tab_grey_scale[i-1][j].getGreen()
+                        +0*tab_grey_scale[i-1][j+1].getGreen()
+                        +1*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        -1*tab_grey_scale[i][j+1].getGreen()
+                        +0*tab_grey_scale[i+1][j-1].getGreen()
+                        -1*tab_grey_scale[i+1][j].getGreen()
+                        -2*tab_grey_scale[i+1][j+1].getGreen();
 
-                blue = tab_grey_scale[i-1][j-1].getBlue()
-                        +2*tab_grey_scale[i][j-1].getBlue()
-                        +tab_grey_scale[i+1][j-1].getBlue()
-                        -tab_grey_scale[i-1][j+1].getBlue()
-                        -2*tab_grey_scale[i][j+1].getBlue()
-                        -tab_grey_scale[i+1][j+1].getBlue();
+                blue = 2*tab_grey_scale[i-1][j-1].getBlue()
+                        +1*tab_grey_scale[i-1][j].getBlue()
+                        +0*tab_grey_scale[i-1][j+1].getBlue()
+                        +1*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        -1*tab_grey_scale[i][j+1].getBlue()
+                        +0*tab_grey_scale[i+1][j-1].getBlue()
+                        -1*tab_grey_scale[i+1][j].getBlue()
+                        -2*tab_grey_scale[i+1][j+1].getBlue();
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -134,44 +274,228 @@ public class Main {
                 if (blue<0) blue = 0;
                 if (blue>255) blue = 255;
 
-                tab_edge_Y[i][j] = new Color(red, green, blue);
-                image_edge_Y.setRGB(i, j, tab_edge_Y[i][j].getRGB());
+                Sobel4[i][j] = new Color(red, green, blue);
+                Sobel4[i][j] = (Sobel4[i][j].getRed()<1 && Sobel4[i][j].getGreen()<1
+                        && Sobel4[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel4.setRGB(i, j, Sobel4[i][j].getRGB());
             }
-        outputfile = new File("3_image_edge_Y.bmp");
-        ImageIO.write(image_edge_Y, "bmp", outputfile);
+        outputfile = new File("5_image_Sobel4.bmp");
+        ImageIO.write(image_Sobel4, "bmp", outputfile);
 
-        //wybielanie krawedzi po X
-        BufferedImage image_white_edge_X = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++) {
-                tab_edge_white_X[i][j] = (tab_edge_X[i][j].getRed()<1 && tab_edge_X[i][j].getGreen()<1
-                        && tab_edge_X[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
-                image_white_edge_X.setRGB(i, j, tab_edge_white_X[i][j].getRGB());
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 5
+        BufferedImage image_Sobel5 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 1; i < width-1; i++)
+            for (int j = 1; j < height-1; j++) {
+
+                red = -(-1*tab_grey_scale[i-1][j-1].getRed()
+                        +0*tab_grey_scale[i-1][j].getRed()
+                        +1*tab_grey_scale[i-1][j+1].getRed()
+                        -2*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        +2*tab_grey_scale[i][j+1].getRed()
+                        -1*tab_grey_scale[i+1][j-1].getRed()
+                        +0*tab_grey_scale[i+1][j].getRed()
+                        +1*tab_grey_scale[i+1][j+1].getRed());
+
+                green = -(-1*tab_grey_scale[i-1][j-1].getGreen()
+                        +0*tab_grey_scale[i-1][j].getGreen()
+                        +1*tab_grey_scale[i-1][j+1].getGreen()
+                        -2*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        +2*tab_grey_scale[i][j+1].getGreen()
+                        -1*tab_grey_scale[i+1][j-1].getGreen()
+                        +0*tab_grey_scale[i+1][j].getGreen()
+                        +1*tab_grey_scale[i+1][j+1].getGreen());
+
+                blue = -(-1*tab_grey_scale[i-1][j-1].getBlue()
+                        +0*tab_grey_scale[i-1][j].getBlue()
+                        +1*tab_grey_scale[i-1][j+1].getBlue()
+                        -2*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        +2*tab_grey_scale[i][j+1].getBlue()
+                        -1*tab_grey_scale[i+1][j-1].getBlue()
+                        +1*tab_grey_scale[i+1][j+1].getBlue()
+                        +0*tab_grey_scale[i+1][j].getBlue());
+
+                if (red<0) red = 0;
+                if (red>255) red = 255;
+                if (green<0) green = 0;
+                if (green>255) green = 255;
+                if (blue<0) blue = 0;
+                if (blue>255) blue = 255;
+
+                Sobel5[i][j] = new Color(red, green, blue);
+                Sobel5[i][j] = (Sobel5[i][j].getRed()<1 && Sobel5[i][j].getGreen()<1
+                        && Sobel5[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel5.setRGB(i, j, Sobel5[i][j].getRGB());
             }
-        outputfile = new File("4_image_white_edge_X.bmp");
-        ImageIO.write(image_white_edge_X, "bmp", outputfile);
+        outputfile = new File("6_image_Sobel5.bmp");
+        ImageIO.write(image_Sobel5, "bmp", outputfile);
 
-        //wybielanie krawedzi po Y
-        BufferedImage image_white_edge_Y = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++) {
-                tab_edge_white_Y[i][j] = (tab_edge_Y[i][j].getRed()<1 && tab_edge_Y[i][j].getGreen()<1
-                        && tab_edge_Y[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
-                image_white_edge_Y.setRGB(i, j, tab_edge_white_Y[i][j].getRGB());
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 6
+        BufferedImage image_Sobel6 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 1; i < width-1; i++)
+            for (int j = 1; j < height-1; j++) {
+
+                red = -(0*tab_grey_scale[i-1][j-1].getRed()
+                        +1*tab_grey_scale[i-1][j].getRed()
+                        +2*tab_grey_scale[i-1][j+1].getRed()
+                        -1*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        +1*tab_grey_scale[i][j+1].getRed()
+                        -2*tab_grey_scale[i+1][j-1].getRed()
+                        -1*tab_grey_scale[i+1][j].getRed()
+                        +0*tab_grey_scale[i+1][j+1].getRed());
+
+                green = -(0*tab_grey_scale[i-1][j-1].getGreen()
+                        +1*tab_grey_scale[i-1][j].getGreen()
+                        +2*tab_grey_scale[i-1][j+1].getGreen()
+                        -1*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        +1*tab_grey_scale[i][j+1].getGreen()
+                        -2*tab_grey_scale[i+1][j-1].getGreen()
+                        -1*tab_grey_scale[i+1][j].getGreen()
+                        +0*tab_grey_scale[i+1][j+1].getGreen());
+
+                blue = -(0*tab_grey_scale[i-1][j-1].getBlue()
+                        +1*tab_grey_scale[i-1][j].getBlue()
+                        +2*tab_grey_scale[i-1][j+1].getBlue()
+                        -1*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        +1*tab_grey_scale[i][j+1].getBlue()
+                        -2*tab_grey_scale[i+1][j-1].getBlue()
+                        -1*tab_grey_scale[i+1][j].getBlue()
+                        +0*tab_grey_scale[i+1][j+1].getBlue());
+
+                if (red<0) red = 0;
+                if (red>255) red = 255;
+                if (green<0) green = 0;
+                if (green>255) green = 255;
+                if (blue<0) blue = 0;
+                if (blue>255) blue = 255;
+
+                Sobel6[i][j] = new Color(red, green, blue);
+                Sobel6[i][j] = (Sobel6[i][j].getRed()<1 && Sobel6[i][j].getGreen()<1
+                        && Sobel6[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel6.setRGB(i, j, Sobel6[i][j].getRGB());
             }
-        outputfile = new File("5_image_white_edge_Y.bmp");
-        ImageIO.write(image_white_edge_Y, "bmp", outputfile);
+        outputfile = new File("7_image_Sobel6.bmp");
+        ImageIO.write(image_Sobel6, "bmp", outputfile);
 
-        //polaczenie image_white_edge_X z image_white_edge_Y
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 7
+        BufferedImage image_Sobel7 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 1; i < width-1; i++)
+            for (int j = 1; j < height-1; j++) {
+
+                red = -(1*tab_grey_scale[i-1][j-1].getRed()
+                        +2*tab_grey_scale[i-1][j].getRed()
+                        +1*tab_grey_scale[i-1][j+1].getRed()
+                        +0*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        +0*tab_grey_scale[i][j+1].getRed()
+                        -1*tab_grey_scale[i+1][j-1].getRed()
+                        -2*tab_grey_scale[i+1][j].getRed()
+                        -1*tab_grey_scale[i+1][j+1].getRed());
+
+                green = -(1*tab_grey_scale[i-1][j-1].getGreen()
+                        +2*tab_grey_scale[i-1][j].getGreen()
+                        +1*tab_grey_scale[i-1][j+1].getGreen()
+                        +0*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        +0*tab_grey_scale[i][j+1].getGreen()
+                        -1*tab_grey_scale[i+1][j-1].getGreen()
+                        -2*tab_grey_scale[i+1][j].getGreen()
+                        -1*tab_grey_scale[i+1][j+1].getGreen());
+
+                blue = -(1*tab_grey_scale[i-1][j-1].getBlue()
+                        +2*tab_grey_scale[i-1][j].getBlue()
+                        +1*tab_grey_scale[i-1][j+1].getBlue()
+                        +0*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        +0*tab_grey_scale[i][j+1].getBlue()
+                        -1*tab_grey_scale[i+1][j-1].getBlue()
+                        -2*tab_grey_scale[i+1][j].getBlue()
+                        -1*tab_grey_scale[i+1][j+1].getBlue());
+
+                if (red<0) red = 0;
+                if (red>255) red = 255;
+                if (green<0) green = 0;
+                if (green>255) green = 255;
+                if (blue<0) blue = 0;
+                if (blue>255) blue = 255;
+
+                Sobel7[i][j] = new Color(red, green, blue);
+                Sobel7[i][j] = (Sobel7[i][j].getRed()<1 && Sobel7[i][j].getGreen()<1
+                        && Sobel7[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel7.setRGB(i, j, Sobel7[i][j].getRGB());
+            }
+        outputfile = new File("8_image_Sobel7.bmp");
+        ImageIO.write(image_Sobel7, "bmp", outputfile);
+
+        //utworzenie zdjecia po zastosowaniu operatora Sobela 8
+        BufferedImage image_Sobel8 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 1; i < width-1; i++)
+            for (int j = 1; j < height-1; j++) {
+
+                red = -(2*tab_grey_scale[i-1][j-1].getRed()
+                        +1*tab_grey_scale[i-1][j].getRed()
+                        +0*tab_grey_scale[i-1][j+1].getRed()
+                        +1*tab_grey_scale[i][j-1].getRed()
+                        +0*tab_grey_scale[i][j].getRed()
+                        -1*tab_grey_scale[i][j+1].getRed()
+                        +0*tab_grey_scale[i+1][j-1].getRed()
+                        -1*tab_grey_scale[i+1][j].getRed()
+                        -2*tab_grey_scale[i+1][j+1].getRed());
+
+                green = -(2*tab_grey_scale[i-1][j-1].getGreen()
+                        +1*tab_grey_scale[i-1][j].getGreen()
+                        +0*tab_grey_scale[i-1][j+1].getGreen()
+                        +1*tab_grey_scale[i][j-1].getGreen()
+                        +0*tab_grey_scale[i][j].getGreen()
+                        -1*tab_grey_scale[i][j+1].getGreen()
+                        +0*tab_grey_scale[i+1][j-1].getGreen()
+                        -1*tab_grey_scale[i+1][j].getGreen()
+                        -2*tab_grey_scale[i+1][j+1].getGreen());
+
+                blue = -(2*tab_grey_scale[i-1][j-1].getBlue()
+                        +1*tab_grey_scale[i-1][j].getBlue()
+                        +0*tab_grey_scale[i-1][j+1].getBlue()
+                        +1*tab_grey_scale[i][j-1].getBlue()
+                        +0*tab_grey_scale[i][j].getBlue()
+                        -1*tab_grey_scale[i][j+1].getBlue()
+                        +0*tab_grey_scale[i+1][j-1].getBlue()
+                        -1*tab_grey_scale[i+1][j].getBlue()
+                        -2*tab_grey_scale[i+1][j+1].getBlue());
+
+                if (red<0) red = 0;
+                if (red>255) red = 255;
+                if (green<0) green = 0;
+                if (green>255) green = 255;
+                if (blue<0) blue = 0;
+                if (blue>255) blue = 255;
+
+                Sobel8[i][j] = new Color(red, green, blue);
+                Sobel8[i][j] = (Sobel8[i][j].getRed()<1 && Sobel8[i][j].getGreen()<1
+                        && Sobel8[i][j].getBlue()<1) ? new Color(0, 0, 0) : new Color (255, 255, 255);
+                image_Sobel8.setRGB(i, j, Sobel8[i][j].getRGB());
+            }
+        outputfile = new File("9_image_Sobel8.bmp");
+        ImageIO.write(image_Sobel8, "bmp", outputfile);
+
+        //polaczenie Sobel1 - Sobel8
         BufferedImage image_white_edge = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                tab_edge_green[i][j] = tab_edge_white[i][j] = (tab_edge_white_X[i][j].getBlue() == 255
-                        || tab_edge_white_Y[i][j].getBlue() == 255) ? new Color(255, 255, 255) : new Color (0, 0, 0);
+                tab_edge_green[i][j] = tab_edge_white[i][j] =
+                        (Sobel1[i][j].getBlue() == 255 || Sobel2[i][j].getBlue() == 255 || Sobel3[i][j].getBlue() == 255 || Sobel4[i][j].getBlue() == 255 || Sobel5[i][j].getBlue() == 255 || Sobel6[i][j].getBlue() == 255 || Sobel7[i][j].getBlue() == 255 || Sobel8[i][j].getBlue() == 255) ? new Color(255, 255, 255) : new Color (0, 0, 0);
                 image_white_edge.setRGB(i, j, tab_edge_white[i][j].getRGB());
             }
-        outputfile = new File("6_image_white_edge.bmp");
+        outputfile = new File("10_image_white_edge.bmp");
         ImageIO.write(image_white_edge, "bmp", outputfile);
+
+/*----------------------------------------------------------------------------------------------------
+KONIEC
+----------------------------------------------------------------------------------------------------*/
 
         //malowanie czarnej ramki, zeby ksztalty nie wychodzily poza obrazek
         for (int i = 0; i < width; i++) tab_edge_white[i][0] = tab_edge_white[i][height-1] = new Color (0, 0, 0);
@@ -360,15 +684,17 @@ public class Main {
         BufferedImage image_circuit_green = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) image_circuit_green.setRGB(i, j, tab_edge_green[i][j].getRGB());
-        outputfile = new File("7_image_circuit_green.bmp");
+        outputfile = new File("11_image_circuit_green.bmp");
         ImageIO.write(image_circuit_green, "bmp", outputfile);
 
         //zamalowanie ksztaltow - test
         BufferedImage image_destroyed_shapes = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) image_destroyed_shapes.setRGB(i, j, tab_edge_white[i][j].getRGB());
-        outputfile = new File("8_destroyed_shapes.bmp");
+        outputfile = new File("12_destroyed_shapes.bmp");
         ImageIO.write(image_destroyed_shapes, "bmp", outputfile);
+        long timeEnd=System.currentTimeMillis();
+        System.out.println("\nCzas wykonywania programu " + (timeEnd-timeBegin)/1000 + "[s]");
     }
 }
 
