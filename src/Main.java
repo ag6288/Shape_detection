@@ -61,7 +61,7 @@ POCZATEK
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
                 grey = (int) (0.3 * tab_Red[i][j] + 0.59 * tab_Green[i][j] + 0.11 * tab_Blue[i][j]);
-                grey = (int) (0.33 * tab_Red[i][j] + 0.33 * tab_Green[i][j] + 0.33 * tab_Blue[i][j]);
+                //grey = (int) (0.33 * tab_Red[i][j] + 0.33 * tab_Green[i][j] + 0.33 * tab_Blue[i][j]);
                 tab_grey_scale[i][j] = new Color(grey, grey, grey);
                 //tab_grey_scale[i][j] = new Color((int) (0.3 * tab_Red[i][j]), (int) (0.59 * tab_Green[i][j]), (int) (0.11 * tab_Blue[i][j]));
                 //tab_grey_scale[i][j] = new Color((int) (0.33 * tab_Red[i][j]), (int) (0.33 * tab_Green[i][j]), (int) (0.33 * tab_Blue[i][j]));
@@ -88,7 +88,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = -1*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = -1*tab_grey_scale[i-1][j-1].getRed()
                         +0*tab_grey_scale[i-1][j].getRed()
                         +1*tab_grey_scale[i-1][j+1].getRed()
                         -2*tab_grey_scale[i][j-1].getRed()
@@ -97,26 +97,6 @@ POCZATEK
                         -1*tab_grey_scale[i+1][j-1].getRed()
                         +0*tab_grey_scale[i+1][j].getRed()
                         +1*tab_grey_scale[i+1][j+1].getRed();
-
-                green = -1*tab_grey_scale[i-1][j-1].getGreen()
-                        +0*tab_grey_scale[i-1][j].getGreen()
-                        +1*tab_grey_scale[i-1][j+1].getGreen()
-                        -2*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        +2*tab_grey_scale[i][j+1].getGreen()
-                        -1*tab_grey_scale[i+1][j-1].getGreen()
-                        +0*tab_grey_scale[i+1][j].getGreen()
-                        +1*tab_grey_scale[i+1][j+1].getGreen();
-
-                blue = -1*tab_grey_scale[i-1][j-1].getBlue()
-                        +0*tab_grey_scale[i-1][j].getBlue()
-                        +1*tab_grey_scale[i-1][j+1].getBlue()
-                        -2*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        +2*tab_grey_scale[i][j+1].getBlue()
-                        -1*tab_grey_scale[i+1][j-1].getBlue()
-                        +1*tab_grey_scale[i+1][j+1].getBlue()
-                        +0*tab_grey_scale[i+1][j].getBlue();
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -138,7 +118,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = 0*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = 0*tab_grey_scale[i-1][j-1].getRed()
                         +1*tab_grey_scale[i-1][j].getRed()
                         +2*tab_grey_scale[i-1][j+1].getRed()
                         -1*tab_grey_scale[i][j-1].getRed()
@@ -147,26 +127,6 @@ POCZATEK
                         -2*tab_grey_scale[i+1][j-1].getRed()
                         -1*tab_grey_scale[i+1][j].getRed()
                         +0*tab_grey_scale[i+1][j+1].getRed();
-
-                green = 0*tab_grey_scale[i-1][j-1].getGreen()
-                        +1*tab_grey_scale[i-1][j].getGreen()
-                        +2*tab_grey_scale[i-1][j+1].getGreen()
-                        -1*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        +1*tab_grey_scale[i][j+1].getGreen()
-                        -2*tab_grey_scale[i+1][j-1].getGreen()
-                        -1*tab_grey_scale[i+1][j].getGreen()
-                        +0*tab_grey_scale[i+1][j+1].getGreen();
-
-                blue = 0*tab_grey_scale[i-1][j-1].getBlue()
-                        +1*tab_grey_scale[i-1][j].getBlue()
-                        +2*tab_grey_scale[i-1][j+1].getBlue()
-                        -1*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        +1*tab_grey_scale[i][j+1].getBlue()
-                        -2*tab_grey_scale[i+1][j-1].getBlue()
-                        -1*tab_grey_scale[i+1][j].getBlue()
-                        +0*tab_grey_scale[i+1][j+1].getBlue();
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -188,7 +148,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = 1*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = 1*tab_grey_scale[i-1][j-1].getRed()
                         +2*tab_grey_scale[i-1][j].getRed()
                         +1*tab_grey_scale[i-1][j+1].getRed()
                         +0*tab_grey_scale[i][j-1].getRed()
@@ -197,26 +157,6 @@ POCZATEK
                         -1*tab_grey_scale[i+1][j-1].getRed()
                         -2*tab_grey_scale[i+1][j].getRed()
                         -1*tab_grey_scale[i+1][j+1].getRed();
-
-                green = 1*tab_grey_scale[i-1][j-1].getGreen()
-                        +2*tab_grey_scale[i-1][j].getGreen()
-                        +1*tab_grey_scale[i-1][j+1].getGreen()
-                        +0*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        +0*tab_grey_scale[i][j+1].getGreen()
-                        -1*tab_grey_scale[i+1][j-1].getGreen()
-                        -2*tab_grey_scale[i+1][j].getGreen()
-                        -1*tab_grey_scale[i+1][j+1].getGreen();
-
-                blue = 1*tab_grey_scale[i-1][j-1].getBlue()
-                        +2*tab_grey_scale[i-1][j].getBlue()
-                        +1*tab_grey_scale[i-1][j+1].getBlue()
-                        +0*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        +0*tab_grey_scale[i][j+1].getBlue()
-                        -1*tab_grey_scale[i+1][j-1].getBlue()
-                        -2*tab_grey_scale[i+1][j].getBlue()
-                        -1*tab_grey_scale[i+1][j+1].getBlue();
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -238,7 +178,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = 2*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = 2*tab_grey_scale[i-1][j-1].getRed()
                         +1*tab_grey_scale[i-1][j].getRed()
                         +0*tab_grey_scale[i-1][j+1].getRed()
                         +1*tab_grey_scale[i][j-1].getRed()
@@ -247,26 +187,6 @@ POCZATEK
                         +0*tab_grey_scale[i+1][j-1].getRed()
                         -1*tab_grey_scale[i+1][j].getRed()
                         -2*tab_grey_scale[i+1][j+1].getRed();
-
-                green = 2*tab_grey_scale[i-1][j-1].getGreen()
-                        +1*tab_grey_scale[i-1][j].getGreen()
-                        +0*tab_grey_scale[i-1][j+1].getGreen()
-                        +1*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        -1*tab_grey_scale[i][j+1].getGreen()
-                        +0*tab_grey_scale[i+1][j-1].getGreen()
-                        -1*tab_grey_scale[i+1][j].getGreen()
-                        -2*tab_grey_scale[i+1][j+1].getGreen();
-
-                blue = 2*tab_grey_scale[i-1][j-1].getBlue()
-                        +1*tab_grey_scale[i-1][j].getBlue()
-                        +0*tab_grey_scale[i-1][j+1].getBlue()
-                        +1*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        -1*tab_grey_scale[i][j+1].getBlue()
-                        +0*tab_grey_scale[i+1][j-1].getBlue()
-                        -1*tab_grey_scale[i+1][j].getBlue()
-                        -2*tab_grey_scale[i+1][j+1].getBlue();
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -288,7 +208,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = -(-1*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = -(-1*tab_grey_scale[i-1][j-1].getRed()
                         +0*tab_grey_scale[i-1][j].getRed()
                         +1*tab_grey_scale[i-1][j+1].getRed()
                         -2*tab_grey_scale[i][j-1].getRed()
@@ -297,26 +217,6 @@ POCZATEK
                         -1*tab_grey_scale[i+1][j-1].getRed()
                         +0*tab_grey_scale[i+1][j].getRed()
                         +1*tab_grey_scale[i+1][j+1].getRed());
-
-                green = -(-1*tab_grey_scale[i-1][j-1].getGreen()
-                        +0*tab_grey_scale[i-1][j].getGreen()
-                        +1*tab_grey_scale[i-1][j+1].getGreen()
-                        -2*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        +2*tab_grey_scale[i][j+1].getGreen()
-                        -1*tab_grey_scale[i+1][j-1].getGreen()
-                        +0*tab_grey_scale[i+1][j].getGreen()
-                        +1*tab_grey_scale[i+1][j+1].getGreen());
-
-                blue = -(-1*tab_grey_scale[i-1][j-1].getBlue()
-                        +0*tab_grey_scale[i-1][j].getBlue()
-                        +1*tab_grey_scale[i-1][j+1].getBlue()
-                        -2*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        +2*tab_grey_scale[i][j+1].getBlue()
-                        -1*tab_grey_scale[i+1][j-1].getBlue()
-                        +1*tab_grey_scale[i+1][j+1].getBlue()
-                        +0*tab_grey_scale[i+1][j].getBlue());
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -338,7 +238,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = -(0*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = -(0*tab_grey_scale[i-1][j-1].getRed()
                         +1*tab_grey_scale[i-1][j].getRed()
                         +2*tab_grey_scale[i-1][j+1].getRed()
                         -1*tab_grey_scale[i][j-1].getRed()
@@ -347,26 +247,6 @@ POCZATEK
                         -2*tab_grey_scale[i+1][j-1].getRed()
                         -1*tab_grey_scale[i+1][j].getRed()
                         +0*tab_grey_scale[i+1][j+1].getRed());
-
-                green = -(0*tab_grey_scale[i-1][j-1].getGreen()
-                        +1*tab_grey_scale[i-1][j].getGreen()
-                        +2*tab_grey_scale[i-1][j+1].getGreen()
-                        -1*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        +1*tab_grey_scale[i][j+1].getGreen()
-                        -2*tab_grey_scale[i+1][j-1].getGreen()
-                        -1*tab_grey_scale[i+1][j].getGreen()
-                        +0*tab_grey_scale[i+1][j+1].getGreen());
-
-                blue = -(0*tab_grey_scale[i-1][j-1].getBlue()
-                        +1*tab_grey_scale[i-1][j].getBlue()
-                        +2*tab_grey_scale[i-1][j+1].getBlue()
-                        -1*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        +1*tab_grey_scale[i][j+1].getBlue()
-                        -2*tab_grey_scale[i+1][j-1].getBlue()
-                        -1*tab_grey_scale[i+1][j].getBlue()
-                        +0*tab_grey_scale[i+1][j+1].getBlue());
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -388,7 +268,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = -(1*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = -(1*tab_grey_scale[i-1][j-1].getRed()
                         +2*tab_grey_scale[i-1][j].getRed()
                         +1*tab_grey_scale[i-1][j+1].getRed()
                         +0*tab_grey_scale[i][j-1].getRed()
@@ -397,26 +277,6 @@ POCZATEK
                         -1*tab_grey_scale[i+1][j-1].getRed()
                         -2*tab_grey_scale[i+1][j].getRed()
                         -1*tab_grey_scale[i+1][j+1].getRed());
-
-                green = -(1*tab_grey_scale[i-1][j-1].getGreen()
-                        +2*tab_grey_scale[i-1][j].getGreen()
-                        +1*tab_grey_scale[i-1][j+1].getGreen()
-                        +0*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        +0*tab_grey_scale[i][j+1].getGreen()
-                        -1*tab_grey_scale[i+1][j-1].getGreen()
-                        -2*tab_grey_scale[i+1][j].getGreen()
-                        -1*tab_grey_scale[i+1][j+1].getGreen());
-
-                blue = -(1*tab_grey_scale[i-1][j-1].getBlue()
-                        +2*tab_grey_scale[i-1][j].getBlue()
-                        +1*tab_grey_scale[i-1][j+1].getBlue()
-                        +0*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        +0*tab_grey_scale[i][j+1].getBlue()
-                        -1*tab_grey_scale[i+1][j-1].getBlue()
-                        -2*tab_grey_scale[i+1][j].getBlue()
-                        -1*tab_grey_scale[i+1][j+1].getBlue());
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
@@ -438,7 +298,7 @@ POCZATEK
         for (int i = 1; i < width-1; i++)
             for (int j = 1; j < height-1; j++) {
 
-                red = -(2*tab_grey_scale[i-1][j-1].getRed()
+                red = green = blue = -(2*tab_grey_scale[i-1][j-1].getRed()
                         +1*tab_grey_scale[i-1][j].getRed()
                         +0*tab_grey_scale[i-1][j+1].getRed()
                         +1*tab_grey_scale[i][j-1].getRed()
@@ -447,26 +307,6 @@ POCZATEK
                         +0*tab_grey_scale[i+1][j-1].getRed()
                         -1*tab_grey_scale[i+1][j].getRed()
                         -2*tab_grey_scale[i+1][j+1].getRed());
-
-                green = -(2*tab_grey_scale[i-1][j-1].getGreen()
-                        +1*tab_grey_scale[i-1][j].getGreen()
-                        +0*tab_grey_scale[i-1][j+1].getGreen()
-                        +1*tab_grey_scale[i][j-1].getGreen()
-                        +0*tab_grey_scale[i][j].getGreen()
-                        -1*tab_grey_scale[i][j+1].getGreen()
-                        +0*tab_grey_scale[i+1][j-1].getGreen()
-                        -1*tab_grey_scale[i+1][j].getGreen()
-                        -2*tab_grey_scale[i+1][j+1].getGreen());
-
-                blue = -(2*tab_grey_scale[i-1][j-1].getBlue()
-                        +1*tab_grey_scale[i-1][j].getBlue()
-                        +0*tab_grey_scale[i-1][j+1].getBlue()
-                        +1*tab_grey_scale[i][j-1].getBlue()
-                        +0*tab_grey_scale[i][j].getBlue()
-                        -1*tab_grey_scale[i][j+1].getBlue()
-                        +0*tab_grey_scale[i+1][j-1].getBlue()
-                        -1*tab_grey_scale[i+1][j].getBlue()
-                        -2*tab_grey_scale[i+1][j+1].getBlue());
 
                 if (red<0) red = 0;
                 if (red>255) red = 255;
