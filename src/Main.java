@@ -1,12 +1,13 @@
+/**
+ * Created by Janusz on 2014-11-02.
+ */
+
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
- /**
- * Created by Janusz on 2014-11-02.
- */
 public class Main {
     public static void main(String[] args) throws IOException {
         long timeBegin=System.currentTimeMillis();
