@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         long timeBegin=System.currentTimeMillis();
-        File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_images.bmp");
+        File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\photo2.jpg");
 
         BufferedImage picture = null;
         try {
@@ -21,6 +21,9 @@ public class Main {
         }
 
         int red, green, blue, grey;
+        int pocz_i = -1, pocz_j = -1, i1 = 0, i2 = 0, i3 = 0, i4 = 0, j1 = 0, j2 = 0, j3 = 0, j4 = 0;
+        int k1 = 0, k2 = 0, k3 = 0, k4 = 0, k_avg = 0, side_avg=0;
+        int srodek_i, srodek_j;
         int width = picture.getWidth();
         int height = picture.getHeight();
 
@@ -28,6 +31,8 @@ public class Main {
         int neighbors_white = 4;
         int neighbors_smoothed_edge = 5;
         int neighbors_filled_edges = 5;
+        int amount_of_smoothing = 4;
+        int amount_of_filling = 5;
 
         Color[][] tab_RGB = new Color[width][height];
         int[][] tab_Red = new int[width][height];
@@ -423,7 +428,7 @@ POCZATEK
             for (int j = 0; j < height; j++)
                 tab_smoothed_edges[i][j] = tab_edges[i][j];
 
-        for (int t = 0; t < 1; t++){    //ilosc powtorzen wygladzania
+        for (int t = 0; t < amount_of_smoothing; t++){
             for (int i = 1; i < width-1; i++)
                 for (int j = 1; j < height-1; j++)
                     if (tab_edges[i-1][j-1].getRed() + tab_edges[i-1][j].getRed() + tab_edges[i-1][j+1].getRed()
@@ -442,17 +447,18 @@ POCZATEK
 
         //zamalowanie czarnych dziur w krawedziach
         BufferedImage image_filled_edges = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (int i = 1; i < width-1; i++)
-            for (int j = 1; j < height-1; j++){
-                if (tab_edges[i-1][j-1].getRed() + tab_edges[i-1][j].getRed() + tab_edges[i-1][j+1].getRed()
-                        + tab_edges[i][j-1].getRed() + tab_edges[i][j+1].getRed() + tab_edges[i+1][j-1].getRed()
-                        + tab_edges[i+1][j].getRed() + tab_edges[i+1][j+1].getRed() < neighbors_filled_edges * 255){
-                    tab_filled_edges[i][j] = new Color(0,0,0);
-                } else {
-                    tab_filled_edges[i][j] = new Color(255, 255, 255);
+        for (int t = 0; t < amount_of_filling; t++)
+            for (int i = 1; i < width-1; i++)
+                for (int j = 1; j < height-1; j++){
+                    if (tab_edges[i-1][j-1].getRed() + tab_edges[i-1][j].getRed() + tab_edges[i-1][j+1].getRed()
+                            + tab_edges[i][j-1].getRed() + tab_edges[i][j+1].getRed() + tab_edges[i+1][j-1].getRed()
+                            + tab_edges[i+1][j].getRed() + tab_edges[i+1][j+1].getRed() < neighbors_filled_edges * 255){
+                        tab_filled_edges[i][j] = new Color(0,0,0);
+                    } else {
+                        tab_filled_edges[i][j] = new Color(255, 255, 255);
+                    }
+                    image_filled_edges.setRGB(i, j, tab_filled_edges[i][j].getRGB());
                 }
-                image_filled_edges.setRGB(i, j, tab_filled_edges[i][j].getRGB());
-            }
 
         outputfile = new File("13_image_filled_edges.bmp");
         ImageIO.write(image_filled_edges, "bmp", outputfile);
@@ -478,9 +484,6 @@ KONIEC
                 tab_green_edges[0][i] = tab_green_edges[width-1][i] = new Color (0, 0, 0);
 
         //szukanie wierzcholkow startowych
-        int pocz_i = -1, pocz_j = -1, i1 = 0, i2 = 0, i3 = 0, i4 = 0, j1 = 0, j2 = 0, j3 = 0, j4 = 0;
-        int k1 = 0, k2 = 0, k3 = 0, k4 = 0;
-        int srodek_i, srodek_j;
         for (int l = 0; l<height; l++)
             for (int k = 0; k<width; k++) {
                 //System.out.println("l " + l);
@@ -552,6 +555,11 @@ KONIEC
                         i4 = i;
                         j4 = j;
                     }
+                    k_avg = (int)(0.25*(k1+k2+k3+k4));
+                    side_avg =  (int)(0.25*(Math.sqrt((pocz_i - i1) * (pocz_i - i1) + (pocz_j - j1) * (pocz_j - j1)
+                            + Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2))
+                            + Math.sqrt((i2 - i3) * (i2 - i3) + (j2 - j3) * (j2 - j3))
+                            + Math.sqrt((i3 - pocz_i) * (i3 - pocz_i) + (j3 - pocz_j) * (j3 - pocz_j)))));
 
                     /*System.out.println("pocz i " + pocz_i);
                     System.out.println("pocz j " + pocz_j);
@@ -587,8 +595,9 @@ KONIEC
                                 && Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) <
                                 1.05 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2))) {
 
-                            if (k1 > 1.03 * Math.sqrt((pocz_i - i1) * (pocz_i - i1) + (pocz_j - j1) * (pocz_j - j1))) {
-                                System.out.println("\nZnalazlem kolo ");
+                            if (k_avg > 1.01 * side_avg) {
+                                System.out.println("\nkolo k_avg " + k_avg + " side_avg " + side_avg);
+                                System.out.println("Znalazlem kolo ");
                                 srodek_i = (int)(0.25*(pocz_i+i1+i2+i3));
                                 srodek_j = (int)(0.25*(pocz_j+j1+j2+j3));
                                 System.out.println("Srodek: [" + srodek_i + "; " + srodek_j + "]");
@@ -604,8 +613,9 @@ KONIEC
                                 System.out.println("[" + i3 + "; " + j3 + "]");
                             }
                         } else {
-                            if (k1 > 1.01 * Math.sqrt((pocz_i - i1) * (pocz_i - i1) + (pocz_j - j1) * (pocz_j - j1))) {
-                                System.out.println("\nZnalazlem elipse ");
+                            if (k_avg > 1.03 * side_avg) {
+                                System.out.println("\nelipsa k_avg " + k_avg + " side_avg " + side_avg);
+                                System.out.println("Znalazlem elipse ");
                                 srodek_i = (int)(0.25*(pocz_i+i1+i2+i3));
                                 srodek_j = (int)(0.25*(pocz_j+j1+j2+j3));
                                 System.out.println("Srodek: [" + srodek_i + "; " + srodek_j + "]");
