@@ -20,7 +20,6 @@ public class Main {
             e.printStackTrace();
         }
 
-
         int red, green, blue, grey;
         int width = picture.getWidth();
         int height = picture.getHeight();
