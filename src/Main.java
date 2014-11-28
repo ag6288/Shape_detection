@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         long timeBegin=System.currentTimeMillis();
-        File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\photo2.jpg");
+        File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_images.bmp");
 
         BufferedImage picture = null;
         try {
@@ -22,7 +22,7 @@ public class Main {
 
         int red, green, blue, grey;
         int pocz_i = -1, pocz_j = -1, i1 = 0, i2 = 0, i3 = 0, i4 = 0, j1 = 0, j2 = 0, j3 = 0, j4 = 0;
-        int k1 = 0, k2 = 0, k3 = 0, k4 = 0, k_avg = 0, side_avg=0;
+        int k1 = 0, k2 = 0, k3 = 0, k4 = 0, k_max = 0, side_avg=0;
         int srodek_i, srodek_j;
         int width = picture.getWidth();
         int height = picture.getHeight();
@@ -31,8 +31,10 @@ public class Main {
         int neighbors_white = 4;
         int neighbors_smoothed_edge = 5;
         int neighbors_filled_edges = 5;
-        int amount_of_smoothing = 4;
-        int amount_of_filling = 5;
+
+        //ilosc powtorzen
+        int amount_of_smoothing = 1;
+        int amount_of_filling = 1;
 
         Color[][] tab_RGB = new Color[width][height];
         int[][] tab_Red = new int[width][height];
@@ -66,22 +68,19 @@ public class Main {
             }
 
 /*----------------------------------------------------------------------------------------------------
-POCZATEK
+POCZATEK ZABAWY ZE ZDJECIEM
 ----------------------------------------------------------------------------------------------------*/
+
         //utworzenie zdjecia w skali szarosci
         BufferedImage image_grey = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
                 grey = (int) (0.3 * tab_Red[i][j] + 0.59 * tab_Green[i][j] + 0.11 * tab_Blue[i][j]);
-
-                //System.out.println(grey + " piksel:" + i + ", " + j);
                 tab_grey_scale[i][j] = new Color(grey, grey, grey);
                 image_grey.setRGB(i, j, tab_grey_scale[i][j].getRGB());
             }
         File outputfile = new File("1_image_grey.bmp");
         ImageIO.write(image_grey, "bmp", outputfile);
-
-
 
         for (int i = 0; i < width; i++)
             Sobel1[i][0] = Sobel2[i][0] = Sobel3[i][0] = Sobel4[i][0] = Sobel5[i][0] = Sobel6[i][0] = Sobel7[i][0] = Sobel8[i][0]
@@ -469,7 +468,9 @@ POCZATEK
                 tab_beautiful_edges[i][j] = tab_green_edges[i][j] = new Color(picture.getRGB(i, j));*/
 
 /*----------------------------------------------------------------------------------------------------
-KONIEC
+KONIEC ZABAWY ZE ZDJECIEM
+
+POCZATEK WYSZUKIWANIA KSZTALTOW
 ----------------------------------------------------------------------------------------------------*/
 
         //kopia tab_filled_edges do tab_beautiful_edges i tab_green_edges
@@ -486,9 +487,8 @@ KONIEC
         //szukanie wierzcholkow startowych
         for (int l = 0; l<height; l++)
             for (int k = 0; k<width; k++) {
-                //System.out.println("l " + l);
-                //System.out.println("k " + k);
                 if (tab_beautiful_edges[k][l].getBlue()==255){
+                    k1 = k2 = k3 = k4 = 0;
                     if (pocz_i==-1) pocz_i = k;
                     if (pocz_j==-1) pocz_j = l;
                     int i = k;
@@ -555,12 +555,15 @@ KONIEC
                         i4 = i;
                         j4 = j;
                     }
-                    k_avg = (int)(0.25*(k1+k2+k3+k4));
-                    side_avg =  (int)(0.25*(Math.sqrt((pocz_i - i1) * (pocz_i - i1) + (pocz_j - j1) * (pocz_j - j1)
+
+                    k_max = Math.max(Math.max(k1, k2), Math.max(k3, k4));
+
+                    side_avg =  (int)(0.25*(Math.sqrt((pocz_i - i1) * (pocz_i - i1) + (pocz_j - j1) * (pocz_j - j1))
                             + Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2))
                             + Math.sqrt((i2 - i3) * (i2 - i3) + (j2 - j3) * (j2 - j3))
-                            + Math.sqrt((i3 - pocz_i) * (i3 - pocz_i) + (j3 - pocz_j) * (j3 - pocz_j)))));
+                            + Math.sqrt((i3 - pocz_i) * (i3 - pocz_i) + (j3 - pocz_j) * (j3 - pocz_j))));
 
+                    //wyswietlenie wspolrzednych wyszukanych wierzcholkow - test
                     /*System.out.println("pocz i " + pocz_i);
                     System.out.println("pocz j " + pocz_j);
                     System.out.println("i1 " + i1);
@@ -589,15 +592,13 @@ KONIEC
                             && Math.abs(pocz_j-j3) < 1.3 * Math.abs(j1-j2)
                             && i1 != 0 && i2 != 0 && i3 != 0 && i4 != 0
                             && j1 != 0 && j2 != 0 && j3 != 0 && j4 != 0){ //czworokat
-
                         if (Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) >
                                 0.95 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2))
                                 && Math.sqrt((i1 - i2) * (i1 - i2) + (j1 - j2) * (j1 - j2)) <
                                 1.05 * Math.sqrt((i3 - i2) * (i3 - i2) + (j3 - j2) * (j3 - j2))) {
 
-                            if (k_avg > 1.01 * side_avg) {
-                                System.out.println("\nkolo k_avg " + k_avg + " side_avg " + side_avg);
-                                System.out.println("Znalazlem kolo ");
+                            if (k_max > 1.03 * side_avg) {
+                                System.out.println("\nZnalazlem kolo ");
                                 srodek_i = (int)(0.25*(pocz_i+i1+i2+i3));
                                 srodek_j = (int)(0.25*(pocz_j+j1+j2+j3));
                                 System.out.println("Srodek: [" + srodek_i + "; " + srodek_j + "]");
@@ -613,9 +614,8 @@ KONIEC
                                 System.out.println("[" + i3 + "; " + j3 + "]");
                             }
                         } else {
-                            if (k_avg > 1.03 * side_avg) {
-                                System.out.println("\nelipsa k_avg " + k_avg + " side_avg " + side_avg);
-                                System.out.println("Znalazlem elipse ");
+                            if (k_max > 1.03 * side_avg) {
+                                System.out.println("\nZnalazlem elipse ");
                                 srodek_i = (int)(0.25*(pocz_i+i1+i2+i3));
                                 srodek_j = (int)(0.25*(pocz_j+j1+j2+j3));
                                 System.out.println("Srodek: [" + srodek_i + "; " + srodek_j + "]");
@@ -696,12 +696,6 @@ KONIEC
                             }
                         }
 
-                            /*System.out.println("\nZnalazlem trojkat, jego wierzcholki to: ");
-                            System.out.println("[ pocz" + pocz_i + "; " + pocz_j + "]");
-                            if (i1 != 0 && j1 != 0) System.out.println("[ pierwszy " + i1 + "; " + j1 + "]");
-                            if (i2 != 0 && j2 != 0) System.out.println("[ drugi " + i2 + "; " + j2 + "]");
-                            if (i3 != 0 && j3 != 0) System.out.println("[ trzeci " + i3 + "; " + j3 + "]");*/
-
                         //niszczenie znalezionego ksztaltu
                         for (int a = 1; a<width-2; a++)
                             for (int b = 1; b<height-2; b++)
@@ -712,8 +706,11 @@ KONIEC
                 }
                 pocz_i = -1;    //wierzcholek poczatkowy ponownie ustawiam na [-1, -1]
                 pocz_j = -1;    //zebym mogl szukac kolejnej figury
-                k1 = k2 = k3 = k4 = 0;
             }
+
+/*----------------------------------------------------------------------------------------------------
+KONIEC WYSZUKIWANIA KSZTALTOW
+----------------------------------------------------------------------------------------------------*/
 
         //przejscie po obwodzie - test
         BufferedImage image_circuit_green = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -732,30 +729,3 @@ KONIEC
         System.out.println("\nCzas wykonywania programu " + 0.001*(timeEnd-timeBegin) + "[s]");
     }
 }
-
-/*
-        //wypelnianie tablicy Hough
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
-                if (tab_edge_white[i][j].getBlue()==255)
-                    for (int k = 0; k<180; k++) {
-                        r = (i * Math.cos(k) + j * Math.sin(k));
-                        tab_Hough[k][(int)Math.abs(r)]++;
-                    }
-
-        Map<Double, Double> proste = new HashMap<Double, Double>();
-        //px = r * cos(angle)
-        //py = r * sin(angle).
-        //y=ax+b
-        //b = y-ax
-
-        //wyszukiwanie wierzcholkow
-        int bk=0, bj=0, c=0;
-        for (int k = 0; k<180; k++)
-            for (int j = 0; j<(int)Math.sqrt(width*width+height*height); j++){
-                if (tab_Hough[k][j]>100) {
-                    proste.put(Math.tan(k), (j * Math.sin(k) - Math.tan(k) * j * Math.cos(k)));
-                }
-        }
-        System.out.println("rozmiar" + proste.size());
- */
