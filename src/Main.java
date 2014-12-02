@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         long timeBegin = System.currentTimeMillis();
         File plik = new File("C:\\Users\\Janusz\\IdeaProjects\\Shape_detection\\0_images.bmp");
-
+        
         BufferedImage picture = null;
         try {
             picture = ImageIO.read(plik);
