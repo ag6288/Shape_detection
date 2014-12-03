@@ -727,6 +727,8 @@ KONIEC WYSZUKIWANIA KSZTALTOW
             for (int j = 0; j < height; j++) image_destroyed_shapes.setRGB(i, j, tab_beautiful_edges[i][j].getRGB());
         outputfile = new File("15_destroyed_shapes.bmp");
         ImageIO.write(image_destroyed_shapes, "bmp", outputfile);
+
+        //wyswietlenie czasu potrzebnego do wykonania programu
         long timeEnd = System.currentTimeMillis();
         System.out.println("\nCzas wykonywania programu " + 0.001 * (timeEnd - timeBegin) + "[s]");
     }
