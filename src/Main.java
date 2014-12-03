@@ -75,7 +75,8 @@ POCZATEK ZABAWY ZE ZDJECIEM
         BufferedImage image_grey = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
-                grey = (int) (0.3 * tab_Red[i][j] + 0.59 * tab_Green[i][j] + 0.11 * tab_Blue[i][j]);
+                //grey = (int) (0.3 * tab_Red[i][j] + 0.59 * tab_Green[i][j] + 0.11 * tab_Blue[i][j]);
+                grey = (int) (0.33 * tab_Red[i][j] + 0.33 * tab_Green[i][j] + 0.33 * tab_Blue[i][j]);
                 tab_grey_scale[i][j] = new Color(grey, grey, grey);
                 image_grey.setRGB(i, j, tab_grey_scale[i][j].getRGB());
             }
